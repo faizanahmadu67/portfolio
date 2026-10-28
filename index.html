@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Faizan Ahmad | Senior Full-Stack Engineer (Laravel, Vue, React)</title>
+    <meta name="description" content="Faizan Ahmad - Senior Full-Stack Engineer with 5+ years building ERPs, CRMs, marketplaces and REST APIs with Laravel, Vue.js, React and Next.js.">
+    <meta name="theme-color" content="#2C001E">
+    <meta property="og:title" content="Faizan Ahmad | Senior Full-Stack Engineer">
+    <meta property="og:description" content="Laravel, Vue, React & Next.js. ERPs, CRMs, marketplaces and APIs.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23E95420'/><text x='50' y='64' font-size='42' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>FA</text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Ubuntu', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        ubuntu: {
+                            aubergine: '#2C001E', orange: '#E95420', warmGrey: '#AEA79F',
+                            panel: '#1E1E1E', terminal: '#300A24'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html, body { height: 100%; }
+        body { font-family: 'Ubuntu', sans-serif; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+
+        .ubuntu-wallpaper {
+            background:
+                radial-gradient(circle at 12% 8%, rgba(119,33,111,.9) 0%, rgba(94,39,80,.7) 30%, transparent 65%),
+                radial-gradient(circle at 90% 95%, rgba(233,84,32,.18) 0%, transparent 45%),
+                linear-gradient(160deg, #3b0a2c 0%, #2C001E 55%, #120010 100%);
+        }
+
+        /* ---------- Windows ---------- */
+        .window {
+            position: absolute; display: none; flex-direction: column;
+            background: #1E1E1E; border: 1px solid rgba(255,255,255,.1);
+            border-radius: 10px 10px 4px 4px; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,.6), 0 0 1px rgba(255,255,255,.2);
+        }
+        .window.open { display: flex; animation: winIn .18s ease-out; }
+        .window.minimized { display: none; }
+        .window.window-active { border-color: rgba(233,84,32,.55); }
+        .window.maximized { inset: 0 !important; width: 100% !important; height: 100% !important; border-radius: 0 !important; }
+        .window-header { touch-action: none; }
+        @keyframes winIn { from { opacity: 0; transform: scale(.97) translateY(6px); } to { opacity: 1; transform: none; } }
+
+        /* Phones & small tablets: every window is a full-screen app */
+        @media (max-width: 767px) {
+            .window, .window.maximized { inset: 0 !important; width: 100% !important; height: 100% !important; border-radius: 0 !important; border: 0; }
+            .window-header { cursor: default !important; }
+        }
+
+        /* ---------- Misc ---------- */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1e1e1e; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E95420; }
+
+        .desktop-icon:hover { background: rgba(255,255,255,.12); }
+        .desktop-icon.selected { background: rgba(233,84,32,.3); box-shadow: inset 0 0 0 1px rgba(233,84,32,.8); }
+        .window-body { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .window-body a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #E95420; outline-offset: 2px; }
+        .term-input { font-size: 16px; }
+        @media (min-width: 768px) { .term-input { font-size: 12px; } }
+        @media (prefers-reduced-motion: reduce) { .window.open { animation: none; } }
+    </style>
+</head>
+<body class="ubuntu-wallpaper text-gray-100 flex flex-col" style="height:100vh;height:100dvh">
+
+    <!-- TOP BAR -->
+    <header class="h-8 shrink-0 bg-black/80 backdrop-blur-md text-xs flex items-center justify-between px-2 sm:px-3 z-50 select-none border-b border-white/10 text-gray-200">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+            <button id="activities-btn" class="font-medium px-2 py-1 rounded hover:bg-white/10 transition shrink-0" title="Show desktop">Activities</button>
+            <span class="hidden sm:flex items-center gap-1.5 font-semibold text-gray-300 truncate">
+                <i class="fa-solid fa-code text-ubuntu-orange"></i>
+                <span class="truncate">Faizan Ahmad - Senior Full-Stack Engineer</span>
+            </span>
+        </div>
+        <div id="clock-display" class="font-medium px-2 py-0.5 rounded hover:bg-white/10 shrink-0"></div>
+        <div class="flex items-center gap-3 text-gray-300 shrink-0">
+            <i class="hidden sm:inline fa-solid fa-wifi"></i>
+            <i class="hidden sm:inline fa-solid fa-volume-high"></i>
+            <i class="hidden sm:inline fa-solid fa-battery-full"></i>
+            <button id="power-btn" class="text-red-400 hover:text-red-300 px-1" title="Restart desktop" aria-label="Restart desktop"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="flex-1 flex min-h-0">
+        <!-- DOCK (desktop) -->
+        <aside id="dock" class="hidden md:flex w-14 shrink-0 bg-black/50 backdrop-blur-md flex-col items-center py-3 gap-2 z-40 border-r border-white/5"></aside>
+
+        <!-- DESKTOP -->
+        <main id="desktop" class="flex-1 relative overflow-hidden min-w-0">
+            <div id="icons" class="absolute inset-0 overflow-y-auto p-3 sm:p-5 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-4 content-start"></div>
+        </main>
+    </div>
+
+    <!-- MOBILE NAV -->
+    <nav id="mobile-nav" class="md:hidden shrink-0 h-14 bg-black/85 backdrop-blur-md border-t border-white/10 flex items-stretch justify-around z-50" style="padding-bottom:env(safe-area-inset-bottom)"></nav>
+
+    <!-- TASKBAR (desktop) -->
+    <footer class="hidden md:flex h-8 shrink-0 bg-black/70 backdrop-blur-md border-t border-white/10 items-center px-4 justify-between text-xs z-40 select-none">
+        <div class="flex items-center gap-2" id="taskbar-apps"></div>
+        <div class="text-gray-400 text-[11px]">&copy; <span id="year"></span> Faizan Ahmad &bull; Laravel &bull; Vue &bull; React &bull; Next.js</div>
+    </footer>
+
+<script>
+(() => {
+'use strict';
+
+/* ======================================================================
+   CONFIG - edit only this block
+   ====================================================================== */
+const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';   // get it free at web3forms.com
+const RESUME_URL    = '/Faizan_Ahmad_Resume.pdf';      // put the PDF in the repo root with this exact name
+
+const DATA = {
+    name: 'Faizan Ahmad',
+    title: 'Senior Full-Stack Engineer',
+    email: 'connect.faizanahmad@gmail.com',
+    location: 'Lahore, Punjab, Pakistan',
+    linkedin: 'https://linkedin.com/in/faizan-ahmad67',
+    github: 'https://github.com/faizanahmadu67',
+
+    summary: 'I build business-critical software: ERPs, CRMs, marketplaces and the REST APIs behind mobile apps. ' +
+             'Laravel is my backbone for complex business logic, with Vue.js, React and Next.js on the front. ' +
+             'I own work end to end: database design, API, UI, deployment.',
+
+    stats: [
+        ['5+', 'Years of experience'],
+        ['20+', 'Platforms delivered'],
+        ['3', 'Frontend stacks: Vue, React, Next.js']
+    ],
+
+    /* Add more roles by copying an object. `period` and `metrics` are optional:
+       leave them empty and nothing is shown.
+       period:  'Jan 2022 - Present'
+       metrics: ['Query time -40%', '10k+ users'] */
+    experience: [
+        {
+            role: 'Senior Full-Stack Engineer',
+            company: 'Brandixsoft',
+            period: '',
+            summary: 'Built internal platforms and client products end to end across Laravel, Vue/React, WordPress and Shopify.',
+            points: [
+                'Built an internal CRM + ERP that replaced Teamwork: leads to sales to projects to departments, client onboarding and progress tracking, role-based admin/client/employee panels, live and group chat, tasks and comments (Laravel, Vite, Docker).',
+                'Digitized HR operations in an internal HRM: salaries, leaves, holidays and tax, moving Excel records into a proper system (Laravel, React, MongoDB).',
+                'Built the Laravel API layer for a dropshipping store (Motoebikes) that syncs products, stock and orders across multiple vendors and books orders via API.',
+                'Delivered the REST APIs and backend for a clothing marketplace (Smilesizter) powering both the iOS and Android apps.',
+                'Shipped quotation systems with admin-controlled form fields and pricing (123oil.co.uk, vanmanrentals.com), including a custom quotation-form plugin.',
+                'Built a custom Shopify Liquid theme (home, catalog, product, cart) and a background app with a stock-update script; also custom WordPress themes on demand.'
+            ],
+            metrics: []
+        }
+    ],
+
+    /* Education: add entries like
+       { degree: 'BS Computer Science', institute: 'University name', period: '2017 - 2021', note: '' }
+       Entries with an empty degree are not shown. */
+    education: [],
+
+    projects: [
+        {
+            title: 'Talk To Trader', tag: 'US Business Directory', role: 'Sole developer', tags: ['laravel'],
+            problem: 'Buyers in the US needed a direct way to find and talk to local service providers.',
+            solution: 'A listing platform with a custom listing algorithm, real-time buyer-vendor chat and a SuperAdmin panel.',
+            impact: 'Architected, built and deployed alone, now live.',
+            stack: ['Laravel', 'Vite', 'MySQL', 'Live chat'],
+            links: [{ label: 'talktotrader.com', url: 'https://talktotrader.com' }]
+        },
+        {
+            title: 'Google Business Profile Analytics', tag: 'Local SEO Dashboard', role: 'Full-stack developer', tags: ['react', 'laravel'],
+            problem: 'Local SEO performance is spread across many Google metrics and hard to present to clients.',
+            solution: 'Tracks 8 local SEO metrics through Google OAuth and APIs, benchmarks against the top 10 competing listings, and generates an 11-page white-label PDF report.',
+            impact: 'Turns raw Google data into a client-ready report.',
+            stack: ['React.js', 'Laravel', 'Google OAuth & API', 'PDF engine'],
+            links: [{ label: 'gmb.talktotrader.com', url: 'https://gmb.talktotrader.com' }]
+        },
+        {
+            title: 'Kainat Travels', tag: 'Transport ERP', role: 'Full-stack developer', tags: ['vue', 'laravel'],
+            problem: 'Bus operations (fleet, seats, bookings, accounts) were handled in separate places.',
+            solution: 'One system for fleet tracking, seat reservation, booking inventory and real-time accounting.',
+            impact: 'Operations, bookings and accounts run from a single platform.',
+            stack: ['Vue.js', 'Laravel', 'MySQL', 'REST APIs'],
+            links: [{ label: 'kainattravels.com', url: 'https://kainattravels.com' }]
+        },
+        {
+            title: 'SNAPPL Real Estate ERP', tag: 'Financial Automation', role: 'Full-stack developer', tags: ['vue', 'laravel'],
+            problem: 'Property sales, installments, recoveries and agent commissions are money-sensitive and error-prone by hand.',
+            solution: 'ERP covering sales, installment workflows, recovery tracking, ledgers and a hierarchy-based agent commission payout engine.',
+            impact: 'Financial workflows and commission payouts are automated and traceable.',
+            stack: ['Laravel', 'Vue.js', 'MySQL', 'Ledgers']
+        },
+        {
+            title: 'YourMart B2B Dropshipping', tag: 'Marketplace & Sync', role: 'Backend developer', tags: ['laravel'],
+            problem: 'Many suppliers, many sellers: inventory and orders drift out of sync.',
+            solution: 'Multi-supplier backend with seller payout wallets, automated inventory mapping, Redis-backed job queues and order fulfillment sync.',
+            impact: 'Heavy sync work runs in background queues instead of blocking users.',
+            stack: ['Laravel', 'Redis', 'MySQL queues'],
+            links: [{ label: 'yourmart.pk', url: 'https://yourmart.pk' }]
+        },
+        {
+            title: 'Internal CRM + ERP (Brandix Stack)', tag: 'Internal Platform', role: 'Full-stack developer', tags: ['laravel'],
+            problem: 'The team relied on Teamwork, with leads, sales, projects and clients living in separate tools.',
+            solution: 'One platform from lead to sale to project delivery, with client onboarding, role-based panels, live and group chat, tasks and comments.',
+            impact: 'Replaced a third-party tool with a system fitted to the company workflow.',
+            stack: ['Laravel', 'Vite', 'Blade', 'Docker']
+        },
+        {
+            title: 'Internal HRM', tag: 'HR Digitization', role: 'Full-stack developer', tags: ['laravel', 'react'],
+            problem: 'Salaries, leaves, holidays and tax records were kept in Excel sheets.',
+            solution: 'HR system covering salaries, leave, holidays and tax, with the existing Excel records digitized into it.',
+            impact: 'HR data lives in one structured system instead of spreadsheets.',
+            stack: ['Laravel', 'React', 'MongoDB', 'Vite']
+        },
+        {
+            title: 'Motoebikes', tag: 'Dropshipping Store', role: 'Backend developer', tags: ['laravel', 'cms'],
+            problem: 'A WordPress store selling third-party bikes needed live products, stock and orders from several vendors.',
+            solution: 'A Laravel API that syncs products, stock and orders across vendors and books orders via API.',
+            impact: 'Catalog and stock stay current without manual updates.',
+            stack: ['WordPress', 'Laravel API', 'Vendor APIs']
+        },
+        {
+            title: 'Smilesizter', tag: 'Clothing Marketplace', role: 'Backend developer', tags: ['laravel', 'cms'],
+            problem: 'A clothing brand needed one backend for its website and its iOS and Android apps.',
+            solution: 'Laravel backend and REST APIs serving both mobile apps, with a WordPress front site.',
+            impact: 'Web and both mobile apps run on one API.',
+            stack: ['Laravel', 'REST APIs', 'WordPress'],
+            links: [{ label: 'smilesizter.com', url: 'https://smilesizter.com' }]
+        },
+        {
+            title: 'Quotation Systems', tag: 'Custom Forms & Admin', role: 'Full-stack developer', tags: ['laravel', 'cms'],
+            problem: 'Moving and oil-supply businesses quote by hand, and prices change often.',
+            solution: 'Quotation forms with admin-controlled fields and pricing, plus an admin panel (123oil.co.uk) and a custom quotation plugin (vanmanrentals.com).',
+            impact: 'Staff change fields and prices themselves, with no developer needed.',
+            stack: ['Laravel', 'WordPress', 'MySQL', 'Bootstrap'],
+            links: [{ label: '123oil.co.uk', url: 'https://123oil.co.uk' }, { label: 'vanmanrentals.com', url: 'https://vanmanrentals.com' }]
+        },
+        {
+            title: 'Restiq Beds Shopify Theme', tag: 'Custom Shopify Theme', role: 'Theme developer', tags: ['cms'],
+            problem: 'The store needed a design beyond what stock themes allow.',
+            solution: 'Custom Liquid theme: home, catalog, product detail and cart.',
+            impact: 'Fully custom storefront; code is public.',
+            stack: ['Shopify', 'Liquid'],
+            links: [{ label: 'GitHub repo', url: 'https://github.com/faizanahmadu67/Restiq-Beds-Shopify' }]
+        },
+        {
+            title: 'MJ Plumber & Heating', tag: 'London Lead Gen', role: 'Frontend developer', tags: ['react'],
+            problem: 'A London plumbing business needed a fast site that turns visitors into leads.',
+            solution: 'Next.js 16 site with an AI chat widget, HighLevel CRM lead capture, embedded Google Maps and Bunny CDN.',
+            impact: 'Every enquiry lands in the CRM automatically.',
+            stack: ['Next.js 16', 'Tailwind CSS', 'AI chat', 'HighLevel CRM'],
+            links: [{ label: 'mjplumberandheatingltd.co.uk', url: 'https://mjplumberandheatingltd.co.uk' }]
+        }
+    ],
+
+    stack: [
+        { name: 'Laravel / PHP 8', icon: 'fa-brands fa-laravel', color: 'text-red-400',
+          why: 'ERPs, CRMs and marketplaces are heavy on business rules. Laravel gives auth, queues, validation, migrations and Eloquent out of the box, so I ship secure features faster.',
+          used: 'SNAPPL, YourMart, Brandix CRM/ERP, Talk To Trader, Motoebikes' },
+        { name: 'Vue.js', icon: 'fa-brands fa-vuejs', color: 'text-emerald-400',
+          why: 'Reactive dashboards and booking forms with low overhead and quick iteration.',
+          used: 'Kainat Travels, SNAPPL' },
+        { name: 'React / Next.js', icon: 'fa-brands fa-react', color: 'text-sky-400',
+          why: 'Component-driven data dashboards (React), and server-rendered, SEO-friendly marketing sites (Next.js).',
+          used: 'Google Business Profile Analytics, HRM, MJ Plumber & Heating' },
+        { name: 'MySQL / Redis / MongoDB', icon: 'fa-solid fa-database', color: 'text-amber-400',
+          why: 'MySQL where integrity matters (ledgers, bookings). Redis for queues and caching. MongoDB where records are flexible documents.',
+          used: 'SNAPPL, YourMart, Kainat Travels, HRM' },
+        { name: 'Docker / Nginx / Linux', icon: 'fa-brands fa-docker', color: 'text-blue-400',
+          why: 'Repeatable deployments and the same environment from laptop to server.',
+          used: 'Brandix CRM/ERP, client sites on Nginx' },
+        { name: 'WordPress / Shopify', icon: 'fa-brands fa-wordpress', color: 'text-cyan-400',
+          why: 'When clients want to manage content themselves, I build custom themes and plugins, with a Laravel API behind when real logic is needed.',
+          used: 'Motoebikes, Smilesizter, Restiq Beds, quotation plugins' },
+        { name: 'Integrations', icon: 'fa-solid fa-plug', color: 'text-purple-400',
+          why: 'Connecting products to the services clients already use.',
+          used: 'Google OAuth & APIs, Stripe, HighLevel CRM, vendor APIs, REST for mobile apps' }
+    ]
+};
+
+/* ======================================================================
+   HELPERS
+   ====================================================================== */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+const chip = (t, cls = 'bg-white/10 text-gray-200') => `<span class="text-[10px] px-2 py-0.5 rounded ${cls}">${esc(t)}</span>`;
+const extLink = (l, cls = '') => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] text-ubuntu-orange hover:underline ${cls}">${esc(l.label)} <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>`;
+const resumeBtn = (cls = '') => `<a href="${RESUME_URL}" download class="inline-flex items-center justify-center gap-2 bg-ubuntu-orange hover:bg-orange-600 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition shadow ${cls}"><i class="fa-solid fa-download"></i> Download Resume</a>`;
+const validEdu = () => DATA.education.filter(e => e.degree);
+
+/* ======================================================================
+   WINDOW CONTENT
+   ====================================================================== */
+function renderAbout() {
+    const stats = DATA.stats.map(([n, l]) => `
+        <div class="bg-black/30 border border-white/5 rounded-lg p-3 text-center">
+            <div class="text-xl font-bold text-ubuntu-orange">${esc(n)}</div>
+            <div class="text-[11px] text-gray-400 leading-tight mt-0.5">${esc(l)}</div>
+        </div>`).join('');
+    const tiles = [
+        ['Backend', 'text-ubuntu-orange', 'PHP 8, Laravel (Eloquent, Queues, Horizon, Sanctum), REST API design, multi-tenant systems.'],
+        ['Frontend', 'text-sky-400', 'Vue.js, React, Next.js, TypeScript, Tailwind CSS, Vite. Responsive and mobile-first.'],
+        ['Data & DevOps', 'text-emerald-400', 'MySQL query and schema optimization, MongoDB, Redis, Docker, Nginx, Linux/Ubuntu.'],
+        ['Integrations', 'text-purple-400', 'Google OAuth & APIs, Stripe, HighLevel CRM, vendor APIs, REST backends for mobile apps.']
+    ].map(([t, c, d]) => `
+        <div class="bg-black/30 p-3 rounded-lg border border-white/5">
+            <span class="${c} font-semibold text-[11px] uppercase tracking-wider block mb-1">${t}</span>
+            <p class="text-xs text-gray-300">${d}</p>
+        </div>`).join('');
+    return `
+    <div class="p-4 sm:p-6 space-y-5 text-sm text-gray-200">
+        <div class="flex items-center gap-4 border-b border-white/10 pb-4">
+            <div class="w-16 h-16 shrink-0 rounded-full bg-gradient-to-tr from-ubuntu-orange to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-md">FA</div>
+            <div class="min-w-0">
+                <h1 class="text-xl font-bold text-white">${esc(DATA.name)}</h1>
+                <p class="text-ubuntu-orange font-medium text-xs">${esc(DATA.title)} | Laravel, Vue.js & React</p>
+                <p class="text-xs text-gray-400 mt-0.5 break-words"><i class="fa-solid fa-location-dot text-red-400"></i> ${esc(DATA.location)}</p>
+            </div>
+        </div>
+        <p class="text-gray-300 leading-relaxed">${esc(DATA.summary)}</p>
+        <div class="grid grid-cols-3 gap-2 sm:gap-3">${stats}</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${tiles}</div>
+        <div class="flex flex-wrap gap-2 pt-1">
+            ${resumeBtn()}
+            <button data-open="projects" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs px-4 py-2.5 rounded-lg transition"><i class="fa-solid fa-folder-open"></i> View Projects</button>
+            <button data-open="contact" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs px-4 py-2.5 rounded-lg transition"><i class="fa-solid fa-paper-plane"></i> Contact</button>
+        </div>
+    </div>`;
+}
+
+function renderExperience() {
+    const roles = DATA.experience.map(e => `
+        <div class="relative pl-5 pb-6 border-l-2 border-ubuntu-orange/50 last:pb-0">
+            <span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-ubuntu-orange ring-4 ring-ubuntu-panel"></span>
+            <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                <h3 class="text-white font-bold text-base">${esc(e.role)}</h3>
+                ${e.period ? `<span class="text-[11px] text-gray-400 font-mono">${esc(e.period)}</span>` : ''}
+            </div>
+            <p class="text-ubuntu-orange text-xs font-medium mb-2">${esc(e.company)}</p>
+            <p class="text-xs text-gray-300 mb-2">${esc(e.summary)}</p>
+            ${(e.metrics || []).length ? `<div class="flex flex-wrap gap-1.5 mb-2">${e.metrics.map(m => chip(m, 'bg-emerald-900/50 text-emerald-300')).join('')}</div>` : ''}
+            <ul class="space-y-1.5 text-xs text-gray-300">
+                ${e.points.map(p => `<li class="flex gap-2"><i class="fa-solid fa-angle-right text-ubuntu-orange mt-0.5 shrink-0"></i><span>${esc(p)}</span></li>`).join('')}
+            </ul>
+        </div>`).join('');
+    const edu = validEdu();
+    const eduHtml = edu.length ? `
+        <h2 class="text-white font-semibold text-sm mt-6 mb-3 border-l-2 border-ubuntu-orange pl-2">Education</h2>
+        <div class="space-y-3">
+            ${edu.map(e => `
+            <div class="bg-black/30 border border-white/5 rounded-lg p-3">
+                <div class="flex flex-wrap justify-between gap-x-3">
+                    <span class="text-white text-sm font-semibold">${esc(e.degree)}</span>
+                    ${e.period ? `<span class="text-[11px] text-gray-400 font-mono">${esc(e.period)}</span>` : ''}
+                </div>
+                <p class="text-xs text-gray-300">${esc(e.institute || '')}</p>
+                ${e.note ? `<p class="text-[11px] text-gray-400 mt-1">${esc(e.note)}</p>` : ''}
+            </div>`).join('')}
+        </div>` : '';
+    return `
+    <div class="p-4 sm:p-6">
+        <h2 class="text-white font-semibold text-sm mb-4 border-l-2 border-ubuntu-orange pl-2">Work Experience</h2>
+        ${roles}
+        ${eduHtml}
+    </div>`;
+}
+
+function projectCard(p) {
+    const row = (label, color, text) => `<div class="flex gap-2"><span class="${color} font-semibold w-[58px] shrink-0">${label}</span><span class="text-gray-300">${esc(text)}</span></div>`;
+    return `
+    <article class="project-card bg-black/40 rounded-xl p-4 border border-white/10 hover:border-ubuntu-orange/50 transition flex flex-col" data-tags="${p.tags.join(' ')}">
+        <div class="flex justify-between items-start gap-2 mb-1">
+            <h3 class="font-bold text-white text-sm sm:text-base leading-snug">${esc(p.title)}</h3>
+            <span class="shrink-0 px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 text-gray-300 border border-white/10">${esc(p.tag)}</span>
+        </div>
+        <p class="text-[11px] text-gray-400 mb-3"><i class="fa-solid fa-user-gear mr-1"></i>${esc(p.role)}</p>
+        <div class="space-y-1.5 text-[11px] leading-relaxed mb-3">
+            ${row('Problem', 'text-red-400', p.problem)}
+            ${row('Solution', 'text-sky-400', p.solution)}
+            ${row('Impact', 'text-emerald-400', p.impact)}
+        </div>
+        <div class="flex flex-wrap gap-1.5 mt-auto">${p.stack.map(s => chip(s)).join('')}</div>
+        ${p.links ? `<div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 pt-3 border-t border-white/10">${p.links.map(l => extLink(l)).join('')}</div>` : ''}
+    </article>`;
+}
+
+function renderProjects() {
+    const filters = [['all', 'All'], ['laravel', 'Laravel'], ['react', 'React/Next'], ['vue', 'Vue.js'], ['cms', 'WordPress/Shopify']];
+    return `
+    <div class="sticky top-0 z-10 bg-neutral-800/95 backdrop-blur border-b border-white/5 px-3 sm:px-4 py-2 flex gap-2 overflow-x-auto text-xs">
+        ${filters.map(([k, l], i) => `<button data-filter="${k}" class="proj-filter shrink-0 px-3 py-1.5 rounded ${i === 0 ? 'bg-ubuntu-orange text-white' : 'bg-black/40 text-gray-300 hover:bg-white/10'} font-medium">${l}</button>`).join('')}
+    </div>
+    <div class="p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">${DATA.projects.map(projectCard).join('')}</div>`;
+}
+
+function renderSkills() {
+    return `
+    <div class="p-4 sm:p-6">
+        <h2 class="text-white font-semibold text-sm mb-1 border-l-2 border-ubuntu-orange pl-2">Why this stack</h2>
+        <p class="text-xs text-gray-400 mb-4">Each tool was chosen for the kind of problem it solves, and used in real projects.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            ${DATA.stack.map(s => `
+            <div class="bg-black/30 border border-white/5 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1.5"><i class="${s.icon} ${s.color} text-lg"></i><span class="text-white font-semibold text-sm">${esc(s.name)}</span></div>
+                <p class="text-xs text-gray-300 mb-2">${esc(s.why)}</p>
+                <p class="text-[11px] text-gray-400"><span class="text-ubuntu-orange font-semibold">Used in:</span> ${esc(s.used)}</p>
+            </div>`).join('')}
+        </div>
+    </div>`;
+}
+
+function renderContact() {
+    const field = 'w-full bg-black/40 border border-white/10 rounded-lg p-2.5 text-white text-base md:text-xs focus:outline-none focus:border-ubuntu-orange';
+    return `
+    <div class="p-4 sm:p-6 text-xs text-gray-200 space-y-4">
+        <div>
+            <h2 class="text-base font-bold text-white">Send a Message</h2>
+            <p class="text-gray-400 mt-1">Have a SaaS product, ERP or custom backend in mind? Tell me about it.</p>
+        </div>
+        <form id="contact-form" class="space-y-3" novalidate>
+            <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+            <div><label for="c-name" class="block text-gray-300 mb-1 font-medium">Name / Company</label>
+                <input id="c-name" name="name" type="text" required maxlength="100" placeholder="John Doe" class="${field}"></div>
+            <div><label for="c-email" class="block text-gray-300 mb-1 font-medium">Email</label>
+                <input id="c-email" name="email" type="email" required maxlength="120" placeholder="john@example.com" class="${field}"></div>
+            <div><label for="c-msg" class="block text-gray-300 mb-1 font-medium">Message</label>
+                <textarea id="c-msg" name="message" rows="4" required maxlength="3000" placeholder="Hi Faizan, I'd like to discuss a project..." class="${field}"></textarea></div>
+            <button id="c-submit" type="submit" class="w-full bg-ubuntu-orange hover:bg-orange-600 disabled:opacity-60 text-white font-bold py-2.5 rounded-lg transition shadow-md">
+                <i class="fa-solid fa-paper-plane mr-1.5"></i> Send Message</button>
+            <p id="c-status" role="status" aria-live="polite" class="text-xs min-h-[1rem]"></p>
+        </form>
+        <div class="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-x-5 text-gray-300">
+            <a href="mailto:${DATA.email}" class="hover:text-ubuntu-orange flex items-center gap-1.5 break-all"><i class="fa-solid fa-envelope"></i> ${DATA.email}</a>
+            <a href="${DATA.linkedin}" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 flex items-center gap-1.5"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a href="${DATA.github}" target="_blank" rel="noopener noreferrer" class="hover:text-white flex items-center gap-1.5"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+        <div>${resumeBtn('w-full sm:w-auto')}</div>
+    </div>`;
+}
+
+function renderTerminal() {
+    return `
+    <div id="term-body" class="p-3 sm:p-4 font-mono text-xs text-gray-200 leading-relaxed h-full overflow-y-auto">
+        <div id="term-out" class="space-y-2"></div>
+        <div class="flex items-center gap-2 pt-2">
+            <span class="text-green-400 font-bold shrink-0">faizan@ubuntu</span><span class="text-white">:</span><span class="text-sky-400 font-bold">~</span><span class="text-white">$</span>
+            <input id="cli-input" type="text" class="term-input bg-transparent text-white outline-none flex-1 min-w-0 font-mono border-none p-0" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input">
+        </div>
+    </div>`;
+}
+
+/* ======================================================================
+   APPS
+   ====================================================================== */
+const APPS = [
+    { id: 'about',      title: 'About Me',    short: 'About',    file: 'About_Me.txt',  icon: 'fa-solid fa-user',          color: 'bg-amber-600',   head: 'bg-neutral-900', size: [720, 600], render: renderAbout },
+    { id: 'experience', title: 'Experience',  short: 'Work',     file: 'Experience.log', icon: 'fa-solid fa-briefcase',     color: 'bg-indigo-600',  head: 'bg-neutral-900', size: [720, 600], render: renderExperience },
+    { id: 'projects',   title: 'Projects',    short: 'Projects', file: 'Projects',      icon: 'fa-solid fa-folder-open',   color: 'bg-sky-600',     head: 'bg-neutral-900', size: [900, 620], render: renderProjects },
+    { id: 'skills',     title: 'Stack',       short: 'Stack',    file: 'Stack.json',    icon: 'fa-solid fa-layer-group',   color: 'bg-emerald-600', head: 'bg-black',       size: [720, 600], render: renderSkills },
+    { id: 'terminal',   title: 'Terminal',    short: 'Shell',    file: 'Terminal',      icon: 'fa-solid fa-terminal',      color: 'bg-black border border-gray-600', head: 'bg-neutral-900', size: [680, 460], render: renderTerminal, bodyClass: 'bg-ubuntu-terminal' },
+    { id: 'contact',    title: 'Contact',     short: 'Contact',  file: 'Contact.sh',    icon: 'fa-solid fa-paper-plane',   color: 'bg-ubuntu-orange', head: 'bg-neutral-900', size: [520, 640], render: renderContact }
+];
+
+const desktop = $('#desktop');
+const state = { open: new Set(), min: new Set(), z: 30, focus: null };
+const appById = id => APPS.find(a => a.id === id);
+const winEl = id => $('#win-' + id);
+
+function buildWindows() {
+    APPS.forEach((app, i) => {
+        const w = document.createElement('section');
+        w.id = 'win-' + app.id;
+        w.className = 'window';
+        w.setAttribute('role', 'dialog');
+        w.setAttribute('aria-label', app.title);
+        w.style.width = `min(${app.size[0]}px, calc(100% - 16px))`;
+        w.style.height = `min(${app.size[1]}px, calc(100% - 16px))`;
+        w.style.left = (24 + i * 26) + 'px';
+        w.style.top = (12 + i * 22) + 'px';
+        w.innerHTML = `
+            <div class="window-header ${app.head} h-10 md:h-9 shrink-0 flex items-center justify-between px-3 cursor-move select-none border-b border-white/5">
+                <div class="hidden md:flex items-center gap-2 w-14">
+                    <button data-act="close" aria-label="Close" class="w-3.5 h-3.5 rounded-full bg-red-500 hover:bg-red-400"></button>
+                    <button data-act="min" aria-label="Minimize" class="w-3.5 h-3.5 rounded-full bg-yellow-500 hover:bg-yellow-400"></button>
+                    <button data-act="max" aria-label="Maximize" class="w-3.5 h-3.5 rounded-full bg-green-500 hover:bg-green-400"></button>
+                </div>
+                <span class="text-xs text-gray-300 font-medium flex items-center gap-2 truncate"><i class="${app.icon} text-ubuntu-orange"></i> ${esc(app.file)}</span>
+                <button data-act="close" aria-label="Close" class="md:hidden w-9 h-9 -mr-2 flex items-center justify-center text-gray-300 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+                <div class="hidden md:block w-14"></div>
+            </div>
+            <div class="window-body flex-1 overflow-y-auto ${app.bodyClass || 'bg-ubuntu-panel'}">${app.render()}</div>`;
+        desktop.appendChild(w);
+
+        w.addEventListener('pointerdown', () => focusApp(app.id));
+        w.addEventListener('click', e => {
+            const b = e.target.closest('[data-act]');
+            if (b) { const a = b.dataset.act; if (a === 'close') closeApp(app.id); if (a === 'min') minApp(app.id); if (a === 'max') toggleMax(app.id); return; }
+            const o = e.target.closest('[data-open]');
+            if (o) openApp(o.dataset.open);
+        });
+        enableDrag(w, app.id);
+    });
+}
+
+function clampInside(w) {
+    if (isMobile() || w.classList.contains('maximized')) return;
+    const W = desktop.clientWidth, H = desktop.clientHeight;
+    const l = Math.max(0, Math.min(w.offsetLeft, W - w.offsetWidth));
+    const t = Math.max(0, Math.min(w.offsetTop, H - w.offsetHeight));
+    w.style.left = l + 'px';
+    w.style.top = t + 'px';
+}
+
+function enableDrag(w, id) {
+    const h = $('.window-header', w);
+    let drag = false, sx = 0, sy = 0, sl = 0, st = 0;
+    h.addEventListener('pointerdown', e => {
+        if (isMobile() || w.classList.contains('maximized') || e.target.closest('button')) return;
+        drag = true; sx = e.clientX; sy = e.clientY; sl = w.offsetLeft; st = w.offsetTop;
+        h.setPointerCapture(e.pointerId);
+    });
+    h.addEventListener('pointermove', e => {
+        if (!drag) return;
+        const W = desktop.clientWidth, H = desktop.clientHeight;
+        w.style.left = Math.max(-w.offsetWidth + 120, Math.min(sl + e.clientX - sx, W - 120)) + 'px';
+        w.style.top = Math.max(0, Math.min(st + e.clientY - sy, H - 40)) + 'px';
+    });
+    const end = () => { if (drag) { drag = false; clampInside(w); } };
+    h.addEventListener('pointerup', end);
+    h.addEventListener('pointercancel', end);
+    h.addEventListener('dblclick', e => { if (!e.target.closest('button') && !isMobile()) toggleMax(id); });
+}
+
+function openApp(id) {
+    const w = winEl(id);
+    state.min.delete(id); state.open.add(id);
+    w.classList.add('open'); w.classList.remove('minimized');
+    clampInside(w);
+    focusApp(id);
+    if (id === 'terminal' && !isMobile()) setTimeout(() => $('#cli-input')?.focus(), 60);
+}
+function closeApp(id) {
+    const w = winEl(id);
+    w.classList.remove('open', 'minimized', 'maximized');
+    state.open.delete(id); state.min.delete(id);
+    if (state.focus === id) state.focus = null;
+    syncChrome();
+}
+function minApp(id) {
+    winEl(id).classList.add('minimized');
+    state.min.add(id);
+    if (state.focus === id) state.focus = null;
+    syncChrome();
+}
+function toggleMax(id) { winEl(id).classList.toggle('maximized'); clampInside(winEl(id)); }
+function focusApp(id) {
+    const w = winEl(id);
+    w.style.zIndex = ++state.z;
+    state.focus = id;
+    $$('.window').forEach(x => x.classList.toggle('window-active', x === w));
+    syncChrome();
+}
+function showDesktop() { state.open.forEach(id => minApp(id)); }
+
+/* ---------- Dock / taskbar / mobile nav ---------- */
+function buildDockAndNav() {
+    const dock = $('#dock'), nav = $('#mobile-nav'), icons = $('#icons');
+    APPS.forEach(app => {
+        dock.insertAdjacentHTML('beforeend', `
+            <button data-app="${app.id}" class="dock-btn relative group p-2 hover:bg-white/10 rounded-xl transition" aria-label="${esc(app.title)}">
+                <div class="w-8 h-8 rounded-lg ${app.color} flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition"><i class="${app.icon}"></i></div>
+                <span class="open-dot hidden absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-ubuntu-orange"></span>
+                <span class="absolute left-14 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50 shadow-md">${esc(app.title)}</span>
+            </button>`);
+        nav.insertAdjacentHTML('beforeend', `
+            <button data-app="${app.id}" class="nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400" aria-label="${esc(app.title)}">
+                <i class="${app.icon} text-base"></i><span class="text-[10px]">${esc(app.short)}</span>
+            </button>`);
+        icons.insertAdjacentHTML('beforeend', `
+            <button data-app="${app.id}" class="desktop-icon flex flex-col items-center p-2 sm:p-3 rounded-lg text-center transition group">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 ${app.color} rounded-2xl flex items-center justify-center text-white text-xl sm:text-2xl shadow-xl group-hover:scale-105 transition mb-2"><i class="${app.icon}"></i></div>
+                <span class="text-[11px] sm:text-xs font-medium text-white drop-shadow-md bg-black/40 px-2 py-0.5 rounded max-w-full truncate">${esc(app.file)}</span>
+            </button>`);
+    });
+    icons.insertAdjacentHTML('beforeend', `
+        <a href="${RESUME_URL}" download class="desktop-icon flex flex-col items-center p-2 sm:p-3 rounded-lg text-center transition group">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-red-600 rounded-2xl flex items-center justify-center text-white text-xl sm:text-2xl shadow-xl group-hover:scale-105 transition mb-2"><i class="fa-solid fa-file-pdf"></i></div>
+            <span class="text-[11px] sm:text-xs font-medium text-white drop-shadow-md bg-black/40 px-2 py-0.5 rounded">Resume.pdf</span>
+        </a>`);
+
+    document.addEventListener('click', e => {
+        const b = e.target.closest('[data-app]');
+        if (!b) return;
+        const id = b.dataset.app;
+        if (b.classList.contains('desktop-icon')) { $$('.desktop-icon').forEach(i => i.classList.remove('selected')); b.classList.add('selected'); }
+        if (b.classList.contains('tb-btn')) {
+            if (state.min.has(id) || state.focus !== id) openApp(id); else minApp(id);
+        } else openApp(id);
+    });
+}
+
+function syncChrome() {
+    const tb = $('#taskbar-apps');
+    tb.innerHTML = '';
+    state.open.forEach(id => {
+        const app = appById(id);
+        const active = state.focus === id && !state.min.has(id);
+        const b = document.createElement('button');
+        b.dataset.app = id;
+        b.className = 'tb-btn px-3 py-1 rounded text-white text-xs flex items-center gap-1.5 transition border ' +
+            (active ? 'bg-white/20 border-ubuntu-orange/70' : 'bg-white/5 hover:bg-white/15 border-white/5 opacity-80');
+        b.innerHTML = `<i class="${app.icon} text-ubuntu-orange"></i><span>${esc(app.title)}</span>`;
+        tb.appendChild(b);
+    });
+    $$('.dock-btn').forEach(b => $('.open-dot', b).classList.toggle('hidden', !state.open.has(b.dataset.app)));
+    $$('.nav-btn').forEach(b => {
+        const on = state.open.has(b.dataset.app);
+        b.classList.toggle('text-ubuntu-orange', on);
+        b.classList.toggle('text-gray-400', !on);
+    });
+}
+
+/* ======================================================================
+   TERMINAL
+   ====================================================================== */
+const term = { hist: [], idx: 0 };
+const kv = (k, v) => `<span class="text-ubuntu-orange">${k}</span> ${v}`;
+
+const COMMANDS = {
+    help: () => 'Available commands:<br>' + [
+        ['about', 'Short overview'], ['experience', 'Work history'], ['education', 'Education'], ['projects', 'Project list'],
+        ['skills', 'Tech stack'], ['contact', 'How to reach me'], ['resume', 'Download my resume'],
+        ['open &lt;app&gt;', 'Open a window (about, experience, projects, skills, contact)'],
+        ['neofetch', 'System info'], ['whoami', 'Current user'], ['clear', 'Clear screen']
+    ].map(([c, d]) => '&nbsp;&nbsp;' + kv(c, '- ' + d)).join('<br>'),
+    about: () => `${esc(DATA.name)} - ${esc(DATA.title)}<br>${esc(DATA.summary)}`,
+    experience: () => DATA.experience.map(e =>
+        `<span class="text-white font-bold">${esc(e.role)}</span> @ <span class="text-ubuntu-orange">${esc(e.company)}</span>${e.period ? ' (' + esc(e.period) + ')' : ''}<br>` +
+        e.points.map(p => '&nbsp;&bull; ' + esc(p)).join('<br>')).join('<br><br>'),
+    education: () => validEdu().length
+        ? validEdu().map(e => `<span class="text-white font-bold">${esc(e.degree)}</span>, ${esc(e.institute || '')}${e.period ? ' (' + esc(e.period) + ')' : ''}`).join('<br>')
+        : 'No education entries yet.',
+    projects: () => DATA.projects.map(p => `&bull; <span class="text-white">${esc(p.title)}</span> <span class="text-gray-500">- ${esc(p.tag)}</span>`).join('<br>') + '<br><br>Type <span class="text-ubuntu-orange">open projects</span> for details.',
+    skills: () => DATA.stack.map(s => `<span class="text-ubuntu-orange">${esc(s.name)}</span>: ${esc(s.used)}`).join('<br>'),
+    contact: () => `Email: <a class="underline text-sky-400" href="mailto:${DATA.email}">${DATA.email}</a><br>LinkedIn: <a class="underline text-sky-400" target="_blank" rel="noopener" href="${DATA.linkedin}">${DATA.linkedin}</a><br>GitHub: <a class="underline text-sky-400" target="_blank" rel="noopener" href="${DATA.github}">${DATA.github}</a>`,
+    resume: () => `<a class="underline text-sky-400" href="${RESUME_URL}" download>Download resume (PDF)</a>`,
+    neofetch: () => `<span class="text-ubuntu-orange font-bold">faizan</span>@<span class="text-ubuntu-orange font-bold">ubuntu-workstation</span><br>` +
+        ['OS: Ubuntu 24.04 LTS', 'Role: ' + DATA.title, 'Backend: Laravel, PHP 8', 'Frontend: Vue, React, Next.js', 'Data: MySQL, Redis, MongoDB', 'DevOps: Docker, Nginx, Linux', 'Location: ' + DATA.location].map(esc).join('<br>'),
+    whoami: () => 'guest@ubuntu-portfolio (recruiter / technical lead visitor)',
+    sudo: () => 'faizan is not in the sudoers file. This incident will be reported.',
+    ls: () => APPS.map(a => esc(a.file)).join('&nbsp;&nbsp;') + '&nbsp;&nbsp;Resume.pdf',
+    date: () => esc(new Date().toString())
+};
+
+function termPrint(html, isCmd) {
+    const out = $('#term-out');
+    const d = document.createElement('div');
+    d.className = isCmd ? '' : 'text-gray-300';
+    if (isCmd) {
+        d.innerHTML = '<span class="text-green-400 font-bold">faizan@ubuntu</span>:<span class="text-sky-400 font-bold">~</span>$ ';
+        const s = document.createElement('span'); s.textContent = html; d.appendChild(s);
+    } else d.innerHTML = html;
+    out.appendChild(d);
+    const body = $('#term-body'); body.scrollTop = body.scrollHeight;
+}
+
+function runCommand(raw) {
+    const input = raw.trim();
+    termPrint(raw, true);
+    if (!input) return;
+    term.hist.push(input); term.idx = term.hist.length;
+    const [cmd, ...args] = input.toLowerCase().split(/\s+/);
+    if (cmd === 'clear') { $('#term-out').innerHTML = ''; return; }
+    if (cmd === 'open') {
+        const target = args[0] === 'stack' ? 'skills' : args[0];
+        if (target && appById(target) && target !== 'terminal') { openApp(target); return termPrint('Opening ' + esc(target) + '...'); }
+        return termPrint('Usage: open &lt;about|experience|projects|skills|contact&gt;');
+    }
+    const fn = COMMANDS[cmd];
+    termPrint(fn ? fn() : `<span class="text-red-400">Command not found: ${esc(cmd)}</span>. Type <span class="text-ubuntu-orange">help</span>.`);
+}
+
+function initTerminal() {
+    termPrint('Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-generic x86_64)<br>* Interactive portfolio shell. Type <span class="text-ubuntu-orange font-bold">help</span> to see commands.');
+    const input = $('#cli-input');
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { runCommand(input.value); input.value = ''; }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); if (term.idx > 0) input.value = term.hist[--term.idx]; }
+        else if (e.key === 'ArrowDown') { e.preventDefault(); input.value = term.idx < term.hist.length - 1 ? term.hist[++term.idx] : (term.idx = term.hist.length, ''); }
+    });
+    $('#term-body').addEventListener('click', () => { if (!window.getSelection().toString()) input.focus(); });
+}
+
+/* ======================================================================
+   PROJECT FILTERS + CONTACT FORM
+   ====================================================================== */
+document.addEventListener('click', e => {
+    const f = e.target.closest('.proj-filter');
+    if (!f) return;
+    const tag = f.dataset.filter;
+    $$('.proj-filter').forEach(b => {
+        const on = b === f;
+        b.classList.toggle('bg-ubuntu-orange', on); b.classList.toggle('text-white', on);
+        b.classList.toggle('bg-black/40', !on); b.classList.toggle('text-gray-300', !on);
+    });
+    $$('.project-card').forEach(c => { c.hidden = !(tag === 'all' || c.dataset.tags.split(' ').includes(tag)); });
+});
+
+function initContactForm() {
+    const form = $('#contact-form'), status = $('#c-status'), btn = $('#c-submit');
+    const say = (msg, ok) => { status.textContent = msg; status.className = 'text-xs min-h-[1rem] ' + (ok ? 'text-emerald-400' : 'text-red-400'); };
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        if (WEB3FORMS_KEY === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+            say('The form is not connected yet. Please email ' + DATA.email + ' directly.', false); return;
+        }
+        const fd = new FormData(form);
+        fd.append('access_key', WEB3FORMS_KEY);
+        fd.append('subject', '[Portfolio] New message from ' + (fd.get('name') || 'visitor'));
+        fd.append('from_name', 'Portfolio Contact Form');
+        btn.disabled = true; say('Sending...', true);
+        try {
+            const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+            const json = await res.json();
+            if (json.success) { say('Thank you! Your message was sent. I will reply soon.', true); form.reset(); }
+            else say('Could not send: ' + (json.message || 'unknown error') + '. Please email me directly.', false);
+        } catch (err) {
+            say('Network error. Please email ' + DATA.email + ' directly.', false);
+        } finally { btn.disabled = false; }
+    });
+}
+
+/* ======================================================================
+   INIT
+   ====================================================================== */
+function updateClock() {
+    $('#clock-display').textContent = new Date().toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
+buildWindows();
+buildDockAndNav();
+initTerminal();
+initContactForm();
+syncChrome();
+updateClock(); setInterval(updateClock, 15000);
+$('#year').textContent = new Date().getFullYear();
+
+$('#activities-btn').addEventListener('click', showDesktop);
+$('#power-btn').addEventListener('click', () => { if (confirm('Restart desktop session?')) location.reload(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.focus) closeApp(state.focus); });
+
+let rz;
+window.addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => state.open.forEach(id => clampInside(winEl(id))), 80);
+});
+
+if (!isMobile()) setTimeout(() => openApp('about'), 300);
+})();
+</script>
+</body>
+</html>
